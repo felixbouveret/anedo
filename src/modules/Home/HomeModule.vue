@@ -3,6 +3,7 @@ import { ArrowRight, CircleClose, CopyDocument } from '@element-plus/icons-vue';
 import { onUnmounted, ref } from 'vue';
 
 import { deleteParty, leaveParty, listenParties } from '@/api/parties';
+import { PartyInterface } from '@/api/parties/types';
 import { getUser } from '@/api/users';
 import MembersList from '@/components/MembersList';
 import { useDate } from '@/composables/useDate';
@@ -16,7 +17,7 @@ const isNewPopinDisplayed = ref(false);
 const isJoinPopinDisplayed = ref(false);
 const { userData } = useUser();
 const { formatDateSeconds } = useDate();
-const userParties = ref();
+const userParties = ref<PartyInterface[]>();
 
 const copyId = (id: string) => {
   navigator.clipboard.writeText(id);
@@ -51,7 +52,7 @@ onUnmounted(() => {
   <div class="homeRoot">
     <h1 class="title">SLT la zone</h1>
     <div class="cardsContainer">
-      <el-card v-for="(party, index) in userParties" :key="index" class="box-card">
+      <el-card v-for="party in userParties" :key="party.id" class="box-card">
         <template #header>
           <div class="card-header">
             <div class="cardInfos">
