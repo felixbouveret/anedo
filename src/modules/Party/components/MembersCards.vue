@@ -1,9 +1,13 @@
 <script lang="ts" setup>
 import { UserFilled } from '@element-plus/icons-vue';
+import { ref } from 'vue';
 
 import { usePartyPage } from '../composbles/usePartyPage.js';
+import MemberAnecdotesPopin from './MemberAnecdotesPopin.vue';
 
 const { partyData } = usePartyPage();
+const anecdotesPopin = ref(false);
+const anecdotesToDisplay = ref();
 </script>
 
 <template>
@@ -24,9 +28,19 @@ const { partyData } = usePartyPage();
       </template>
       <template v-else>
         <el-tag v-if="!member.guessed" type="warning">Cherche toujours...</el-tag>
-        <el-tag v-else type="success">À trouvé !</el-tag>
+        <template v-else>
+          <el-tag type="success">À trouvé !</el-tag>
+          <el-button
+            @click="
+              anecdotesPopin = true;
+              anecdotesToDisplay = member;
+            "
+            >Voir les anecdotes</el-button
+          >
+        </template>
       </template>
     </li>
+    <MemberAnecdotesPopin v-model:is-displayed="anecdotesPopin" :member="anecdotesToDisplay" />
   </ul>
 </template>
 
