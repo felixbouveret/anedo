@@ -14,18 +14,18 @@ const onLogout = async () => {
   router.push({ name: 'Auth' });
 };
 
-const goBack = async () => {
+const goHome = async () => {
   router.push({ name: 'Home' });
 };
 
-const isPartyPage = computed(() => route.name === 'Party');
+const isPartyPage = computed(() => route.name !== 'Home');
 </script>
 
 <template>
   <header class="nav">
     <ul class="list">
       <li v-if="isPartyPage" class="item">
-        <el-button circle :icon="ArrowLeft" :plain="false" @click="goBack" />
+        <el-button circle :icon="ArrowLeft" :plain="false" @click="goHome" />
       </li>
       <li class="item">
         <img
