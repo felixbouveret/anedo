@@ -14,7 +14,7 @@ import AnswerPopin from './components/AnswerPopin.vue';
 import MembersCards from './components/MembersCards.vue';
 import { usePartyPage } from './composbles/usePartyPage';
 
-const { formatDateSeconds, getTime } = useDate();
+const { formatDateSeconds } = useDate();
 const { partyData, triggerPartyListen, triggerPartyMembersListen, resetPartyData } = usePartyPage();
 const { userData } = useUser();
 const route = useRoute();
