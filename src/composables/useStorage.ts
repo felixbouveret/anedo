@@ -1,4 +1,4 @@
-const getFromStorage = <T>(key: string, storage: Storage): T | string | null => {
+const getFromStorage = <T>(key: string, storage: Storage): T | string | undefined => {
   const result = storage.getItem(key);
   if (result) {
     try {
@@ -7,7 +7,7 @@ const getFromStorage = <T>(key: string, storage: Storage): T | string | null => 
       return result;
     }
   }
-  return null;
+  return undefined;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,11 +24,11 @@ const clearStorage = (storage: Storage): void => {
   storage.clear();
 };
 
-const getFromLocalStorage = <T>(key: string): T | string | null => {
+const getFromLocalStorage = <T>(key: string): T | string | undefined => {
   return getFromStorage(key, window.localStorage);
 };
 
-const getFromSessionStorage = <T>(key: string): T | string | null => {
+const getFromSessionStorage = <T>(key: string): T | string | undefined => {
   return getFromStorage(key, window.sessionStorage);
 };
 
