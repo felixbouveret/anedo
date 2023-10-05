@@ -116,8 +116,8 @@ const onTooEarly = () => {
             <el-avatar
               class="member"
               :size="64"
-              :src="member.photoUrl"
-              @error="() => !member.photoUrl"
+              :src="member.photoURL"
+              @error="() => !member.photoURL"
               @click="ancdoteOwner = member"
             >
               <UserFilled :width="32" />

@@ -12,8 +12,8 @@ const { partyData } = usePartyPage();
       <el-avatar
         :class="{ isOwner: member.isOwner }"
         :size="64"
-        :src="member.photoUrl"
-        @error="() => !member.photoUrl"
+        :src="member.photoURL"
+        @error="() => !member.photoURL"
       >
         <UserFilled :width="32" />
       </el-avatar>

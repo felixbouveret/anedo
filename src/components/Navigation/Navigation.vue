@@ -29,7 +29,7 @@ const isPartyPage = computed(() => route.name === 'Party');
       </li>
       <li class="item">
         <img
-          :src="userData.photoUrl"
+          :src="userData.photoURL"
           alt="Profile picture"
           @click="router.push({ name: 'Account' })"
         />
