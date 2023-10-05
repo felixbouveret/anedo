@@ -1,6 +1,7 @@
 export interface UserInterface {
   uid: string;
-  displayName: string | null;
-  photoURL: string | null;
-  email: string | null;
+  displayName: string | undefined;
+  photoURL: string | undefined;
+  photoUrl?: string | undefined;
+  email: string | undefined;
 }
