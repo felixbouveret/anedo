@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ArrowLeft, SwitchButton } from '@element-plus/icons-vue';
+import { HomeFilled, SwitchButton } from '@element-plus/icons-vue';
 import { computed } from '@vue/reactivity';
 import { useRoute } from 'vue-router';
 
@@ -14,21 +14,25 @@ const onLogout = async () => {
   router.push({ name: 'Auth' });
 };
 
-const goBack = async () => {
+const goHome = async () => {
   router.push({ name: 'Home' });
 };
 
-const isPartyPage = computed(() => route.name === 'Party');
+const isPartyPage = computed(() => route.name !== 'Home');
 </script>
 
 <template>
   <header class="nav">
     <ul class="list">
       <li v-if="isPartyPage" class="item">
-        <el-button circle :icon="ArrowLeft" :plain="false" @click="goBack" />
+        <el-button circle :icon="HomeFilled" :plain="false" @click="goHome" />
       </li>
       <li class="item">
-        <img :src="userData.photoUrl" alt="Profile picture" />
+        <img
+          :src="userData.photoURL"
+          alt="Profile picture"
+          @click="router.push({ name: 'Account' })"
+        />
       </li>
       <li class="item">
         <el-button circle :icon="SwitchButton" :plain="false" type="danger" @click="onLogout" />

@@ -1,5 +1,6 @@
 import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
 
+import Auth from '@/api/Auth';
 import db from '@/api/firestore';
 
 import { UserInterface } from './types';
@@ -16,6 +17,8 @@ export const addUser = async (user: UserInterface) => {
 
 export const updateUser = async (user: UserInterface) => {
   try {
+    await Auth.updateNameAndImage(user);
+
     await setDoc(documentRef(user.uid), user, { merge: true });
   } catch (e) {
     console.error('Error adding document: ', e);
@@ -41,6 +44,7 @@ const spliteArray = (array: string[], size: number) => {
   }
   return result;
 };
+
 export const getMultipleUsers = async (uids: string[]): Promise<UserInterface[]> => {
   if (uids.length > 10) {
     const splitedArray = spliteArray(uids, 10);
