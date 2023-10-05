@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
   User
 } from 'firebase/auth';
 
@@ -18,10 +19,14 @@ const auth = getAuth(firebase);
 const register = async (email: string, password: string, displayName: string) => {
   try {
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(user, {
+      displayName: user.displayName
+    });
+
     const dbUser = {
       uid: user.uid,
       displayName,
-      photoUrl: null,
+      photoURL: null,
       email: user.email
     };
 
@@ -61,7 +66,7 @@ const googleLogin = async () => {
     const dbUser = {
       uid: result.user.uid,
       displayName: result.user.displayName,
-      photoUrl: result.user.photoURL,
+      photoURL: result.user.photoURL,
       email: result.user.email
     };
     await addUser(dbUser);
@@ -81,10 +86,25 @@ const googleLogin = async () => {
 
 const authState = (fcn: NextOrObserver<User>) => onAuthStateChanged(auth, fcn);
 
+const updateNameAndImage = async (user: User) => {
+  try {
+    if (!auth.currentUser) return;
+    await updateProfile(auth.currentUser, {
+      displayName: user.displayName,
+      photoURL: user.photoURL
+    });
+    return auth.currentUser;
+  } catch (error) {
+    // An error occurred
+    // ...
+  }
+};
+
 export default {
   register,
   login,
   logout,
   googleLogin,
-  authState
+  authState,
+  updateNameAndImage
 };

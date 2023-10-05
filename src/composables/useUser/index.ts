@@ -3,24 +3,20 @@ import set from 'lodash-es/set';
 import { computed, reactive, watch } from 'vue';
 
 import AuthService from '@/api/Auth';
+import { UserInterface } from '@/api/users/types';
 import { useStorage } from '@/composables/useStorage';
 
 const { getFromLocalStorage, setInLocalStorage, removeFromLocalStorage } = useStorage();
-interface UserInterface {
-  uid?: string;
-  email?: string;
-  displayName?: string;
-  photoUrl?: string;
-}
+
 const userData = reactive({
   uid: '',
   email: '',
   displayName: '',
-  photoUrl: ''
+  photoURL: ''
 });
 
-const setUserData = (key: string, data: any) => set(userData, key, data);
-const getUserData = (key: string) => get(userData, key);
+const setUserData = (key: string, data: unknown) => set(userData, key, data);
+const getUserData = <T>(key: string): T => get(userData, key);
 
 const isLoggedIn = computed(() => !!userData.email);
 
@@ -45,36 +41,34 @@ const register = async (email: string, password: string, displayName: string) =>
 
 const resetUserData = async () => {
   for (const key in userData) delete userData[key];
-  removeFromLocalStorage(['uid', 'email', 'displayName', 'photoUrl']);
+  removeFromLocalStorage(['uid', 'email', 'displayName', 'photoURL']);
 };
 
 const persistUserData = () => {
   setInLocalStorage('uid', userData.uid);
   setInLocalStorage('email', userData.email);
   setInLocalStorage('displayName', userData.displayName);
-  setInLocalStorage('photoUrl', userData.photoUrl);
+  setInLocalStorage('photoURL', userData.photoURL);
 };
 
-const fillUserData = (user) => {
+const fillUserData = (user: UserInterface) => {
   setUserData('uid', user.uid);
   setUserData('email', user.email);
   setUserData('displayName', user.displayName);
-  setUserData('photoUrl', user.photoURL);
+  setUserData('photoURL', user.photoURL);
 };
 
 const fillUserDataFromSession = () => {
-  const userLocal: UserInterface = {};
-  userLocal.uid = getFromLocalStorage('uid');
-  userLocal.email = getFromLocalStorage('email');
-  userLocal.displayName = getFromLocalStorage('displayName');
-  userLocal.photoUrl = getFromLocalStorage('photoUrl');
+  const userLocal = {} as Partial<UserInterface>;
+  userLocal.uid = getFromLocalStorage<string>('uid');
+  userLocal.email = getFromLocalStorage<string>('email');
+  userLocal.displayName = getFromLocalStorage<string>('displayName');
+  userLocal.photoURL = getFromLocalStorage<string>('photoURL');
   Object.assign(userData, userLocal);
 };
 
 const localEmail = getFromLocalStorage('email');
-if (localEmail) {
-  fillUserDataFromSession();
-}
+if (localEmail) fillUserDataFromSession();
 
 watch(userData, (_) => {
   persistUserData();
