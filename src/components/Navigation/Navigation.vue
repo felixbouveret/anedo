@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ArrowLeft, SwitchButton } from '@element-plus/icons-vue';
+import { HomeFilled, SwitchButton } from '@element-plus/icons-vue';
 import { computed } from '@vue/reactivity';
 import { useRoute } from 'vue-router';
 
@@ -25,7 +25,7 @@ const isPartyPage = computed(() => route.name !== 'Home');
   <header class="nav">
     <ul class="list">
       <li v-if="isPartyPage" class="item">
-        <el-button circle :icon="ArrowLeft" :plain="false" @click="goHome" />
+        <el-button circle :icon="HomeFilled" :plain="false" @click="goHome" />
       </li>
       <li class="item">
         <img
