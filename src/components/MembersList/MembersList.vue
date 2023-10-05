@@ -43,8 +43,8 @@ watch(props.membersUid, async (newList) => {
         <el-avatar
           :class="{ isOwner: member.uid === ownerUid }"
           :size="isSmall ? 24 : 32"
-          :src="member.photoUrl"
-          @error="() => !member.photoUrl"
+          :src="member.photoURL"
+          @error="() => !member.photoURL"
         >
           <UserFilled :width="isSmall ? 12 : 16" />
         </el-avatar>
