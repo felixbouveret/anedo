@@ -1,29 +1,20 @@
 <script lang="ts" setup>
-import { ArrowRight, CircleClose, CopyDocument } from '@element-plus/icons-vue';
 import { onUnmounted, ref } from 'vue';
 
-import { deleteParty, leaveParty, listenParties } from '@/api/parties';
+import { listenParties } from '@/api/parties';
 import { PartyInterface } from '@/api/parties/types';
 import { getUser } from '@/api/users';
-import MembersList from '@/components/MembersList';
-import { useDate } from '@/composables/useDate';
 import { useUser } from '@/composables/useUser';
-import router from '@/router';
 
-import JoinPartyPopin from './components/JoinPartyPopin.vue';
-import NewPartyPopin from './components/NewPartyPopin.vue';
+import ActionsButtons from './components/ActionsButtons.vue';
+import PartiesButtons from './components/PartiesButtons.vue';
+import PartyBlock from './components/PartyBlock.vue';
 
-const isNewPopinDisplayed = ref(false);
-const isJoinPopinDisplayed = ref(false);
 const { userData } = useUser();
-const { formatDateSeconds } = useDate();
+
 const userParties = ref<PartyInterface[]>();
 
-const copyId = (id: string) => {
-  navigator.clipboard.writeText(id);
-};
-
-const unsub = listenParties(userData.uid, async (parties) => {
+const unsubscribe = listenParties(userData.uid, async (parties) => {
   const formattedParties = await Promise.all(
     parties.map(async (party) => {
       const members = await Promise.all(party.membersUid.map(getUser));
@@ -38,92 +29,29 @@ const unsub = listenParties(userData.uid, async (parties) => {
   userParties.value = formattedParties;
 });
 
-const onCross = (party: any) => {
-  if (party.ownerUid === userData.uid) deleteParty(party.id);
-  else leaveParty(party.id, userData.uid);
-};
-
 onUnmounted(() => {
-  unsub();
+  unsubscribe();
 });
 </script>
 
 <template>
-  <div class="homeRoot">
-    <h1 class="title">SLT la zone</h1>
-    <div class="cardsContainer">
-      <el-card v-for="party in userParties" :key="party.id" class="box-card">
-        <template #header>
-          <div class="card-header">
-            <div class="cardInfos">
-              <h2 class="cardTitle">{{ party.name }}</h2>
-              <span class="cardDate">{{ formatDateSeconds(party.startingDate.seconds) }}</span>
-            </div>
-
-            <div style="display: flex; gap: 8px; align-items: center">
-              <p>
-                {{ party.id }}
-              </p>
-              <el-tooltip content="Copié !" trigger="click">
-                <el-button
-                  :icon="CopyDocument"
-                  :plain="false"
-                  size="small"
-                  @click="copyId(party.id)"
-                />
-              </el-tooltip>
-            </div>
-          </div>
-        </template>
-        <MembersList :members-uid="party.membersUid" :owner-uid="party.ownerUid" is-small />
-        <div class="cardButtons">
-          <el-button
-            :icon="CircleClose"
-            :plain="false"
-            type="danger"
-            size="small"
-            @click="onCross(party)"
-          >
-            {{ party.ownerUid === userData.uid ? 'Supprimer' : 'Quitter' }}
-          </el-button>
-
-          <el-button
-            :icon="ArrowRight"
-            :plain="false"
-            size="small"
-            @click="router.push({ name: 'Party', params: { id: party.id } })"
-          >
-            Entrer
-          </el-button>
-        </div>
-      </el-card>
+  <div :class="$style.homeRoot">
+    <h1 :class="$style.title">SLT la zone</h1>
+    <div :class="$style.cardsContainer">
+      <PartyBlock v-for="party in userParties" :key="party.id" :party="party" />
     </div>
-    <div class="buttonsContainer">
-      <el-button class="button" @click="isNewPopinDisplayed = true"
-        >Créer une Secret Story</el-button
-      >
-      <el-button class="button" @click="isJoinPopinDisplayed = true">
-        Rejoindre une Secret Story
-      </el-button>
-    </div>
-    <NewPartyPopin
-      :is-displayed="isNewPopinDisplayed"
-      @update:is-displayed="isNewPopinDisplayed = false"
-    />
-    <JoinPartyPopin
-      :is-displayed="isJoinPopinDisplayed"
-      @update:is-displayed="isJoinPopinDisplayed = false"
-    />
+    <PartiesButtons />
+    <ActionsButtons />
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss" module>
 .homeRoot {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 40px;
+  gap: 24px;
   padding: 80px 20px;
 }
 
@@ -131,58 +59,11 @@ onUnmounted(() => {
   font-size: 24px;
 }
 
-.buttonsContainer {
-  max-width: 400px;
-}
-
-.cardInfos {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.cardDate {
-  font-size: 12px;
-}
-
 .cardsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
   width: 100%;
-
-  @media screen and (min-width: 768px) {
-    flex-direction: row;
-    gap: 40px;
-    justify-content: space-between;
-  }
-}
-
-.card-header {
   display: flex;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.cardTitle {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.box-card {
-  width: 100%;
-}
-
-.cardButtons {
-  display: flex;
-  margin-top: 16px;
-  gap: 8px;
-}
-
-.buttonsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 </style>
