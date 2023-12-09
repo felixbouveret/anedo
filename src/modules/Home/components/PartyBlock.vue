@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ArrowRight, CopyDocument } from '@element-plus/icons-vue';
 
+import { deleteParty } from '@/api/parties';
 import MembersList from '@/components/MembersList';
 import { useDate } from '@/composables/useDate';
 import router from '@/router';
@@ -49,6 +50,7 @@ const copyId = (id: string) => {
       >
         Entrer
       </el-button>
+      <el-button :plain="false" size="small" @click="deleteParty(party.id)"> Suppr </el-button>
     </div>
   </div>
 </template>
@@ -61,7 +63,7 @@ const copyId = (id: string) => {
   flex-direction: column;
   gap: 12px;
   padding: 12px;
-  border: solid 2px black;
+  border: solid 2px #ebebeb;
   border-radius: 8px;
 }
 
