@@ -1,13 +1,13 @@
 import { initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDi6ZiafnVtBpZePMuHXvmHr7_WageifZQ',
-  authDomain: 'secret-story-b720b.firebaseapp.com',
-  projectId: 'secret-story-b720b',
-  storageBucket: 'secret-story-b720b.appspot.com',
-  messagingSenderId: '103457997529',
-  appId: '1:103457997529:web:9043f681c5577f10d074c8',
-  measurementId: 'G-KZH9RRK0T7'
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
