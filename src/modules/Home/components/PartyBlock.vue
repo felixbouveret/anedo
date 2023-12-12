@@ -1,14 +1,19 @@
 <script lang="ts" setup>
 import { ArrowRight, CopyDocument } from '@element-plus/icons-vue';
+import { computed, PropType } from 'vue';
 
-import { deleteParty } from '@/api/parties';
+import { deleteParty, leaveParty } from '@/api/parties';
+import { PartyInterface } from '@/api/parties/types';
 import MembersList from '@/components/MembersList';
 import { useDate } from '@/composables/useDate';
+import { useUser } from '@/composables/useUser';
 import router from '@/router';
 
-defineProps({
+const { userData } = useUser();
+
+const props = defineProps({
   party: {
-    type: Object,
+    type: Object as PropType<PartyInterface>,
     default: () => ({})
   }
 });
@@ -18,6 +23,16 @@ const { formatDateSeconds } = useDate();
 const copyId = (id: string) => {
   navigator.clipboard.writeText(id);
 };
+
+const onDestructButton = () => {
+  if (props.party.ownerUid === userData.uid) deleteParty(props.party.id);
+  else leaveParty(props.party.id, userData.uid);
+};
+
+const destructButtonText = computed(() => {
+  if (props.party.ownerUid === userData.uid) return 'Supprimer';
+  return 'Quitter';
+});
 </script>
 
 <template>
@@ -38,7 +53,7 @@ const copyId = (id: string) => {
     <div :class="$style.footer">
       <MembersList
         :class="$style.members"
-        :members-uid="party.membersUid"
+        :party-id="party.id"
         :owner-uid="party.ownerUid"
         is-small
       />
@@ -50,7 +65,9 @@ const copyId = (id: string) => {
       >
         Entrer
       </el-button>
-      <el-button :plain="false" size="small" @click="deleteParty(party.id)"> Suppr </el-button>
+      <el-button :plain="false" size="small" @click="onDestructButton">
+        {{ destructButtonText }}
+      </el-button>
     </div>
   </div>
 </template>
@@ -58,7 +75,6 @@ const copyId = (id: string) => {
 <style lang="scss" module>
 .boxCard {
   width: 100%;
-  max-width: 350px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -99,6 +115,7 @@ const copyId = (id: string) => {
 .footer {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .members {

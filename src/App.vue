@@ -1,15 +1,13 @@
-<script lang="ts" setup>
-import { useRouter } from 'vue-router';
-
-import Navigation from './components/Navigation';
-const { currentRoute } = useRouter();
-</script>
-
 <template>
-  <div>
+  <div :class="$style.appRoot">
     <router-view />
-    <navigation v-if="currentRoute.name !== 'Auth'" />
   </div>
 </template>
 
-<style scoped></style>
+<style module>
+.appRoot {
+  max-width: 540px;
+  margin: 0 auto;
+  height: 100dvh;
+}
+</style>

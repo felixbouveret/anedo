@@ -62,7 +62,7 @@ const onSubmit = async () => {
 
 <template>
   <div class="accountRoot">
-    <h1 class="title">Vla ton compte</h1>
+    <h1 class="title">Compte et paramètres</h1>
     <div class="inner">
       <div class="form">
         <el-avatar
@@ -113,7 +113,6 @@ const onSubmit = async () => {
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  max-width: 400px;
 }
 
 .avatarUploader {

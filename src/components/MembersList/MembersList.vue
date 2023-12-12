@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { UserFilled } from '@element-plus/icons-vue';
-import { computed, onMounted, PropType, ref, watch } from 'vue';
+import { computed, onUnmounted, ref } from 'vue';
 
-import { getUser } from '@/api/users/users.js';
+import { listenPartyMembers } from '@/api/parties';
 
 const props = defineProps({
-  membersUid: {
-    type: Array as PropType<string[]>,
-    default: () => []
+  partyId: {
+    type: String,
+    default: ''
   },
   ownerUid: {
     type: String,
@@ -23,21 +23,20 @@ const props = defineProps({
   }
 });
 
-const isLoading = ref(false);
+const isLoading = ref(true);
 const members = ref();
 
 const container = ref();
 const containerSize = computed(() => container.value?.clientWidth || 0);
 const profileDisplayed = computed(() => Math.floor(containerSize.value / 32));
 
-onMounted(async () => {
-  isLoading.value = true;
-  members.value = await Promise.all(props.membersUid.map(getUser));
+const unsubscribe = listenPartyMembers(props.partyId, (partyMembers) => {
+  members.value = partyMembers;
   isLoading.value = false;
 });
 
-watch(props.membersUid, async (newList) => {
-  members.value = await Promise.all(newList.map(getUser));
+onUnmounted(() => {
+  unsubscribe();
 });
 </script>
 
@@ -59,13 +58,13 @@ watch(props.membersUid, async (newList) => {
         </el-avatar>
       </el-tooltip>
     </li>
-    <li v-if="membersUid.length - 1 - profileDisplayed > 1" :class="$style.membersCount">
+    <li v-if="members.length - 1 - profileDisplayed > 1" :class="$style.membersCount">
       <el-avatar
         :class="[$style.member]"
         :size="isSmall ? 32 : 48"
-        :title="membersUid.length - profileDisplayed"
+        :title="members.length - profileDisplayed"
       >
-        +{{ membersUid.length - 1 - profileDisplayed }}
+        +{{ members.length - 1 - profileDisplayed }}
       </el-avatar>
     </li>
   </ul>

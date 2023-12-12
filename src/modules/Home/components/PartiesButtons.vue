@@ -1,7 +1,6 @@
 <script lang="ts" setup>
+import { Plus, Right } from '@element-plus/icons-vue';
 import { ref } from 'vue';
-
-import ClickableTile from '@/components/ClickableTile.vue';
 
 import JoinPartyPopin from './JoinPartyPopin.vue';
 import NewPartyPopin from './NewPartyPopin.vue';
@@ -12,18 +11,17 @@ const isJoinPopinDisplayed = ref(false);
 
 <template>
   <div :class="$style.buttonsContainer">
-    <ClickableTile
-      :class="$style.button"
-      title="Créer une partie"
-      description="Créez une partie, invitez vos amis et commencez quand tout le monde est prêt."
-      @click="isNewPopinDisplayed = true"
-    />
-    <ClickableTile
-      :class="$style.button"
-      title="Rejoindre une partie"
-      description="Rejoignez une party avec un code de partie et entrez vos annecdotes."
+    <el-button :class="$style.buttons" :icon="Plus" @click="isNewPopinDisplayed = true">
+      Créer une partie</el-button
+    >
+    <el-button
+      :class="$style.buttons"
+      type="primary"
+      :icon="Right"
       @click="isJoinPopinDisplayed = true"
-    />
+    >
+      Rejoindre une partie
+    </el-button>
   </div>
   <NewPartyPopin
     :is-displayed="isNewPopinDisplayed"
@@ -43,5 +41,9 @@ const isJoinPopinDisplayed = ref(false);
   align-items: center;
   justify-content: center;
   gap: 24px;
+}
+
+.buttons {
+  flex: 1;
 }
 </style>
