@@ -42,7 +42,7 @@ const isJoinPopinDisplayed = ref(false);
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: 8px 24px;
 }
 
 .buttons {

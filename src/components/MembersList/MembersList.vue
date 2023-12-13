@@ -64,7 +64,7 @@ onUnmounted(() => {
         :size="isSmall ? 32 : 48"
         :title="members.length - profileDisplayed"
       >
-        {{ members.length - 1 - profileDisplayed }}
+        +{{ members.length - 1 - profileDisplayed }}
       </el-avatar>
     </li>
   </ul>
