@@ -12,9 +12,11 @@ import PartyBlock from './components/PartyBlock.vue';
 const { userData } = useUser();
 
 const userParties = ref<PartyInterface[]>();
+const firstLoad = ref(true);
 
 const unsubscribe = listenParties(userData.uid, async (parties) => {
   userParties.value = parties;
+  if (firstLoad.value) firstLoad.value = false;
 });
 
 onUnmounted(() => {
@@ -26,18 +28,27 @@ onUnmounted(() => {
   <div :class="$style.homeRoot">
     <h1 :class="$style.title">Anedo</h1>
     <div :class="$style.content">
-      <div v-if="userParties?.length" :class="$style.cardsContainer">
-        <PartyBlock v-for="party in userParties" :key="party.id" :party="party" />
-      </div>
-      <div v-else>
-        <el-alert
-          title="Vous ne participez à aucune partie pour le moment."
-          type="info"
-          center
-          show-icon
-          :closable="false"
-        />
-      </div>
+      <el-skeleton v-if="firstLoad" animated>
+        <template #template>
+          <el-skeleton-item variant="rect" style="width: 100%; height: 110px" />
+        </template>
+      </el-skeleton>
+
+      <template v-else>
+        <div v-if="!!userParties?.length" :class="$style.cardsContainer">
+          <PartyBlock v-for="party in userParties" :key="party.id" :party="party" />
+        </div>
+        <div v-else>
+          <el-alert
+            title="Vous ne participez à aucune partie pour le moment."
+            type="info"
+            center
+            show-icon
+            :closable="false"
+          />
+        </div>
+      </template>
+
       <PartiesButtons />
     </div>
 
