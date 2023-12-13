@@ -14,7 +14,7 @@ import AnswerPopin from './components/AnswerPopin.vue';
 import MembersCards from './components/MembersCards.vue';
 import { usePartyPage } from './composbles/usePartyPage';
 
-const { formatDateSeconds } = useDate();
+const { secondsToDate } = useDate();
 const { partyData, triggerPartyListen, triggerPartyMembersListen, resetPartyData } = usePartyPage();
 const { userData } = useUser();
 const route = useRoute();
@@ -67,7 +67,7 @@ onUnmounted(() => {
         <div class="dates">
           <p>
             <span>Début : </span>
-            <span>{{ formatDateSeconds(partyData.party.startingDate.seconds) }}</span>
+            <span>{{ secondsToDate(partyData.party.startingDate.seconds) }}</span>
           </p>
         </div>
         <AnecdotesList />

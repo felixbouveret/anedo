@@ -18,7 +18,7 @@ const props = defineProps({
   }
 });
 
-const { formatDateSeconds } = useDate();
+const { secondsToDate } = useDate();
 
 const copyId = (id: string) => {
   navigator.clipboard.writeText(id);
@@ -40,7 +40,7 @@ const destructButtonText = computed(() => {
     <div :class="$style.cardHeader">
       <div :class="$style.cardInfos">
         <h2 :class="$style.cardTitle">{{ party.name }}</h2>
-        <span :class="$style.cardDate">{{ formatDateSeconds(party.startingDate.seconds) }}</span>
+        <span :class="$style.cardDate">{{ secondsToDate(party.startingDate.seconds) }}</span>
       </div>
 
       <div :class="$style.partyId">
