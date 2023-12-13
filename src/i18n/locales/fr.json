@@ -1,0 +1,31 @@
+{
+  "titles": "cac",
+  "Home": {
+    "title": "Anedo",
+    "noParties": "Vous ne participez à aucune partie pour le moment.",
+    "PartyButtons": {
+      "create": "Créer une partie",
+      "join": "Rejoindre une partie"
+    },
+    "NewPartyPopin": {
+      "title": "Nouvelle partie",
+      "placeholder": "Secret story saison 6",
+      "create": "Créer la partie",
+      "cancel": "Annuler"
+    },
+    "JoinPartyPopin": {
+      "title": "Rejoindre",
+      "info": "Le créateur de la partie doit te donner l’identifiant pour rejoindre.",
+      "join": "Rejoindre la partie",
+      "cancel": "Annuler"
+    }
+  },
+  "PartyBlock": {
+    "delete": "Supprimer",
+    "leave": "Quitter",
+    "enter": "Entrer"
+  },
+  "Global": {
+    "copied": "Copié !"
+  }
+}

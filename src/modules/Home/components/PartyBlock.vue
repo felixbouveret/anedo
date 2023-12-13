@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ArrowRight, CopyDocument, Delete } from '@element-plus/icons-vue';
 import { computed, PropType } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { deleteParty, leaveParty } from '@/api/parties';
 import { PartyInterface } from '@/api/parties/types';
@@ -10,6 +11,7 @@ import { useUser } from '@/composables/useUser';
 import router from '@/router';
 
 const { userData } = useUser();
+const { t } = useI18n();
 
 const props = defineProps({
   party: {
@@ -30,8 +32,8 @@ const onDestructButton = () => {
 };
 
 const destructButtonText = computed(() => {
-  if (props.party.ownerUid === userData.uid) return 'Supprimer';
-  return 'Quitter';
+  if (props.party.ownerUid === userData.uid) return t('PartyBlock.delete');
+  return t('PartyBlock.leave');
 });
 </script>
 
@@ -45,7 +47,7 @@ const destructButtonText = computed(() => {
 
       <div :class="$style.partyId">
         <p>#{{ party.id }}</p>
-        <el-tooltip content="Copié !" trigger="click">
+        <el-tooltip :content="t('Global.copied')" trigger="click">
           <el-button :icon="CopyDocument" :plain="false" size="small" @click="copyId(party.id)" />
         </el-tooltip>
       </div>
@@ -66,7 +68,7 @@ const destructButtonText = computed(() => {
         size="small"
         @click="router.push({ name: 'Party', params: { id: party.id } })"
       >
-        Entrer
+        {{ $t('PartyBlock.enter') }}
       </el-button>
     </div>
   </div>
