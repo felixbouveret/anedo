@@ -6,6 +6,8 @@ import storage from '@/api/firebaseStorage';
 import { updateUser } from '@/api/users';
 import { useUser } from '@/composables/useUser';
 
+import AvatarInput from './components/AvatarInput.vue';
+
 const { userData, persistUserData, fillUserData } = useUser();
 
 const isLoading = ref(false);
@@ -17,27 +19,11 @@ const formData = reactive({
   photoURL: userData.photoURL
 });
 
-const fileElem = ref<HTMLDivElement>();
 const fileRef = ref<File>();
-
-const openImageDirectory = async () => {
-  if (fileElem.value) fileElem.value.click();
-};
-
-const onImageChange = async (e: Event) => {
-  const target = e.target as HTMLInputElement;
-  const file = target.files?.[0];
-  if (!file) return;
-  fileRef.value = file;
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = () => {
-    formData.photoURL = reader.result as string;
-  };
-};
 
 const submitImage = async () => {
   if (!fileRef.value) return;
+
   const storageRef = firebaseStorage.ref(storage, fileRef.value.name);
   const snapshot = await firebaseStorage.uploadBytes(storageRef, fileRef.value);
 
@@ -52,54 +38,68 @@ const submitImage = async () => {
 };
 
 const onSubmit = async () => {
-  await submitImage();
-  await updateUser(formData);
-  fillUserData(formData);
-  persistUserData();
-  fileRef.value = undefined;
+  isLoading.value = true;
+  try {
+    await submitImage();
+    await updateUser(formData);
+    fillUserData(formData);
+    persistUserData();
+    fileRef.value = undefined;
+    isLoading.value = false;
+  } catch (e) {
+    isLoading.value = false;
+  }
 };
 </script>
 
 <template>
-  <div class="accountRoot">
-    <h1 class="title">Compte et paramètres</h1>
-    <div class="inner">
-      <div class="form">
-        <el-avatar
-          :src="formData.photoURL ? formData.photoURL : undefined"
-          :size="80"
-          @click.prevent="openImageDirectory"
-        >
-          {{ !formData.photoURL ? formData.displayName : undefined }}
-        </el-avatar>
-        <input ref="fileElem" type="file" accept="image/*" @change="onImageChange" />
+  <div :class="$style.accountRoot">
+    <h1 :class="$style.title">{{ $t('Account.title') }}</h1>
+    <div :class="$style.inner">
+      <div :class="$style.userInfo">
+        <AvatarInput
+          v-model:url="userData.photoURL"
+          :name="userData.displayName"
+          @on-change="fileRef = $event"
+        />
+        <div :class="$style.right">
+          <div :class="$style.formGroup">
+            <label for="email">{{ $t('Account.Form.email') }}</label>
+            <el-input
+              id="email"
+              v-model="formData.email"
+              :placeholder="$t('Account.Form.emailPlaceholder')"
+              type="email"
+              disabled
+            />
+          </div>
 
-        <div class="formGroup">
-          <label for="email">Email</label>
-          <el-input id="email" v-model="formData.email" placeholder="Email" type="email" disabled />
+          <div :class="$style.formGroup">
+            <label for="firstname">{{ $t('Account.Form.userName') }}</label>
+            <el-input
+              id="firstname"
+              v-model="formData.displayName"
+              :placeholder="$t('Account.Form.userNamePlaceholder')"
+              type="firstname"
+            />
+          </div>
         </div>
-
-        <div class="formGroup">
-          <label for="email">Nom de scène</label>
-          <el-input
-            id="firstname"
-            v-model="formData.displayName"
-            placeholder="Nom de scène"
-            type="firstname"
-          />
-        </div>
-        <el-button type="primary" :loading="isLoading" @click="onSubmit">Enregistrer</el-button>
       </div>
+
+      <el-button type="primary" :loading="isLoading" @click="onSubmit">
+        {{ $t('Account.save') }}
+      </el-button>
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss" module>
 .accountRoot {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 100%;
   gap: 40px;
   padding: 80px 20px;
 }
@@ -108,16 +108,33 @@ const onSubmit = async () => {
   font-size: 24px;
 }
 
-.form {
+.inner {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 40px;
   width: 100%;
 }
 
-.avatarUploader {
+.userInfo {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  gap: 24px;
+}
+
+.right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  label {
+    font-size: 14px;
+    font-weight: 600;
+  }
 }
 </style>

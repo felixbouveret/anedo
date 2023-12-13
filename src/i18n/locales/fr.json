@@ -27,5 +27,15 @@
   },
   "Global": {
     "copied": "Copié !"
+  },
+  "Account": {
+    "title": "Compte et paramètres",
+    "Form": {
+      "userName": "Nom de scène",
+      "email": "Email",
+      "emailPlaceholder": "Email",
+      "userNamePlaceholder": "Nom de scène"
+    },
+    "save": "Enregistrer"
   }
 }
