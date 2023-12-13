@@ -16,5 +16,9 @@ export interface PartyInterface {
   isStarted: boolean;
   canStart: boolean;
   membersUid: string[];
-  startingDate: Date;
+  startingDate: {
+    seconds: number;
+    nanoseconds: number;
+  };
+  ownerUid: string;
 }

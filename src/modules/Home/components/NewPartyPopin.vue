@@ -25,10 +25,10 @@ const computedIsDisplayed = computed({
 const { userData } = useUser();
 
 const name = ref('');
-const startingDate = ref();
 const isLoading = ref(false);
 
 const onSubmit = async () => {
+  if (!name.value) return;
   isLoading.value = true;
   const party = {
     id: '',
@@ -37,7 +37,7 @@ const onSubmit = async () => {
     canStart: false,
     ownerUid: userData.uid,
     membersUid: [userData.uid],
-    startingDate: startingDate.value
+    startingDate: new Date()
   };
   const owner = {
     uid: userData.uid,
@@ -53,32 +53,49 @@ const onSubmit = async () => {
 
 <template>
   <PopinContainer v-if="computedIsDisplayed" @update:is-displayed="computedIsDisplayed = false">
-    <div class="newPartyPopinContainer">
-      <h2>Votre Secret Story</h2>
-      <form class="newPartyPopinContainer" @submit.prevent="onSubmit">
-        <el-input id="name" v-model="name" placeholder="Son nom" type="name" />
-        <el-date-picker
-          v-model="startingDate"
-          style="width: 100% !important"
-          type="date"
-          placeholder="Date de début"
+    <div :class="$style.container">
+      <h2>Nouvelle partie</h2>
+      <form :class="$style.form" @submit.prevent="onSubmit">
+        <el-input
+          id="name"
+          v-model="name"
+          placeholder="Secret story saison 6"
+          type="name"
+          required
         />
-        <el-button native-type="submit" type="primary">Créer</el-button>
+        <div :class="$style.buttons">
+          <el-button native-type="submit" type="primary">Créer la partie</el-button>
+          <el-button @click="computedIsDisplayed = false">Annuler</el-button>
+        </div>
       </form>
     </div>
   </PopinContainer>
 </template>
 
-<style lang="scss" scoped>
-.newPartyPopinContainer {
+<style lang="scss" module>
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
   width: 100%;
+
+  h2 {
+    font-size: 32px;
+    font-weight: 700;
+  }
 }
 
-.datePicker {
-  width: 100% !important;
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 </style>
