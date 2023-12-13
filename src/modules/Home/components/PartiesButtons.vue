@@ -24,10 +24,12 @@ const isJoinPopinDisplayed = ref(false);
     </el-button>
   </div>
   <NewPartyPopin
+    v-if="isNewPopinDisplayed"
     :is-displayed="isNewPopinDisplayed"
     @update:is-displayed="isNewPopinDisplayed = false"
   />
   <JoinPartyPopin
+    v-if="isJoinPopinDisplayed"
     :is-displayed="isJoinPopinDisplayed"
     @update:is-displayed="isJoinPopinDisplayed = false"
   />
