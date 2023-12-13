@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ArrowRight, CopyDocument } from '@element-plus/icons-vue';
+import { ArrowRight, CopyDocument, Delete } from '@element-plus/icons-vue';
 import { computed, PropType } from 'vue';
 
 import { deleteParty, leaveParty } from '@/api/parties';
@@ -57,6 +57,9 @@ const destructButtonText = computed(() => {
         :owner-uid="party.ownerUid"
         is-small
       />
+      <el-tooltip :content="destructButtonText">
+        <el-button :icon="Delete" :plain="false" size="small" @click="onDestructButton" />
+      </el-tooltip>
       <el-button
         :icon="ArrowRight"
         :plain="false"
@@ -64,9 +67,6 @@ const destructButtonText = computed(() => {
         @click="router.push({ name: 'Party', params: { id: party.id } })"
       >
         Entrer
-      </el-button>
-      <el-button :plain="false" size="small" @click="onDestructButton">
-        {{ destructButtonText }}
       </el-button>
     </div>
   </div>
@@ -79,8 +79,8 @@ const destructButtonText = computed(() => {
   flex-direction: column;
   gap: 12px;
   padding: 12px;
-  border: solid 2px #ebebeb;
-  border-radius: 8px;
+  border: solid 1px #dcdfe6;
+  border-radius: 4px;
 }
 
 .cardHeader {
