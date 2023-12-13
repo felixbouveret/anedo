@@ -117,7 +117,13 @@ const onSubmit = async () => {
 
 .userInfo {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 24px;
+
+  @include above(xsmall) {
+    flex-direction: row;
+  }
 }
 
 .right {
@@ -125,6 +131,7 @@ const onSubmit = async () => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
 }
 
 .formGroup {
