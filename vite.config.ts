@@ -17,6 +17,7 @@ export default defineConfig(() => {
         scss: {
           additionalData: `
           @import "@/styles/typo.scss";
+          @import "@/styles/mixins.scss";
         `
         }
       }

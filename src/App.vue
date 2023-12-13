@@ -1,5 +1,10 @@
+<script lang="ts" setup>
+import Navigation from '@/components/Navigation';
+</script>
+
 <template>
   <div :class="$style.appRoot">
+    <Navigation></Navigation>
     <router-view />
   </div>
 </template>

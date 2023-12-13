@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { HomeFilled, SwitchButton } from '@element-plus/icons-vue';
+import { Back } from '@element-plus/icons-vue';
 import { computed } from '@vue/reactivity';
 import { useRoute } from 'vue-router';
 
@@ -18,24 +18,14 @@ const goHome = async () => {
   router.push({ name: 'Home' });
 };
 
-const isPartyPage = computed(() => route.name !== 'Home');
+const canGoBack = computed(() => route.name !== 'Home');
 </script>
 
 <template>
   <header class="nav">
     <ul class="list">
-      <li v-if="isPartyPage" class="item">
-        <el-button circle :icon="HomeFilled" :plain="false" @click="goHome" />
-      </li>
-      <li class="item">
-        <img
-          :src="userData.photoURL"
-          alt="Profile picture"
-          @click="router.push({ name: 'Account' })"
-        />
-      </li>
-      <li class="item">
-        <el-button circle :icon="SwitchButton" :plain="false" type="danger" @click="onLogout" />
+      <li v-if="canGoBack" class="item">
+        <el-button :icon="Back" :plain="false" @click="goHome" />
       </li>
     </ul>
   </header>
@@ -44,14 +34,7 @@ const isPartyPage = computed(() => route.name !== 'Home');
 <style lang="scss" scoped>
 .nav {
   position: fixed;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
   padding: 16px 20px;
-  border: solid 1px #e6e6e6;
-  box-shadow: 0 8px 20px 4px rgba(0, 0, 0, 0.05);
-  border-radius: 16px;
-  background-color: white;
 }
 
 .list {
