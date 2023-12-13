@@ -54,18 +54,22 @@ const onSubmit = async () => {
 <template>
   <PopinContainer v-if="computedIsDisplayed" @update:is-displayed="computedIsDisplayed = false">
     <div :class="$style.container">
-      <h2>Nouvelle partie</h2>
+      <h2>{{ $t('Home.NewPartyPopin.title') }}</h2>
       <form :class="$style.form" @submit.prevent="onSubmit">
         <el-input
           id="name"
           v-model="name"
-          placeholder="Secret story saison 6"
+          :placeholder="$t('Home.NewPartyPopin.placeholder')"
           type="name"
           required
         />
         <div :class="$style.buttons">
-          <el-button native-type="submit" type="primary">Créer la partie</el-button>
-          <el-button @click="computedIsDisplayed = false">Annuler</el-button>
+          <el-button native-type="submit" type="primary">
+            {{ $t('Home.NewPartyPopin.create') }}
+          </el-button>
+          <el-button @click="computedIsDisplayed = false">
+            {{ $t('Home.NewPartyPopin.cancel') }}
+          </el-button>
         </div>
       </form>
     </div>

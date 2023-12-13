@@ -26,7 +26,7 @@ onUnmounted(() => {
 
 <template>
   <div :class="$style.homeRoot">
-    <h1 :class="$style.title">Anedo</h1>
+    <h1 :class="$style.title">{{ $t('Home.title') }}</h1>
     <div :class="$style.content">
       <el-skeleton v-if="firstLoad" animated>
         <template #template>
@@ -39,13 +39,7 @@ onUnmounted(() => {
           <PartyBlock v-for="party in userParties" :key="party.id" :party="party" />
         </div>
         <div v-else>
-          <el-alert
-            title="Vous ne participez à aucune partie pour le moment."
-            type="info"
-            center
-            show-icon
-            :closable="false"
-          />
+          <el-alert :title="$t('Home.noParties')" type="info" center show-icon :closable="false" />
         </div>
       </template>
 

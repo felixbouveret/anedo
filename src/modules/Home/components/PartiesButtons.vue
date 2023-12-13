@@ -12,15 +12,15 @@ const isJoinPopinDisplayed = ref(false);
 <template>
   <div :class="$style.buttonsContainer">
     <el-button :class="$style.buttons" :icon="Plus" @click="isNewPopinDisplayed = true">
-      Créer une partie</el-button
-    >
+      {{ $t('Home.PartyButtons.create') }}
+    </el-button>
     <el-button
       :class="$style.buttons"
       type="primary"
       :icon="Right"
       @click="isJoinPopinDisplayed = true"
     >
-      Rejoindre une partie
+      {{ $t('Home.PartyButtons.join') }}
     </el-button>
   </div>
   <NewPartyPopin

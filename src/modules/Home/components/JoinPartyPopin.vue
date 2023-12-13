@@ -94,12 +94,12 @@ onMounted(() => {
 <template>
   <PopinContainer v-if="computedIsDisplayed" @update:is-displayed="computedIsDisplayed = false">
     <div ref="container" :class="$style.container">
-      <h2>Rejoindre</h2>
+      <h2>{{ $t('Home.JoinPartyPopin.title') }}</h2>
       <form :class="$style.form" @submit.prevent="onSubmit">
         <div :class="$style.content">
           <el-alert
             class="alert"
-            title="Le créateur de la partie doit te donner l’identifiant pour rejoindre."
+            :title="$t('Home.JoinPartyPopin.info')"
             type="info"
             show-icon
             :closable="false"
@@ -119,8 +119,12 @@ onMounted(() => {
           </div>
         </div>
         <div :class="$style.buttons">
-          <el-button native-type="submit" type="primary">Rejoindre la partie</el-button>
-          <el-button @click="computedIsDisplayed = false">Annuler</el-button>
+          <el-button native-type="submit" type="primary">
+            {{ $t('Home.JoinPartyPopin.join') }}
+          </el-button>
+          <el-button @click="computedIsDisplayed = false">
+            {{ $t('Home.JoinPartyPopin.cancel') }}
+          </el-button>
         </div>
       </form>
     </div>
