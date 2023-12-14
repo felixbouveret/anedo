@@ -1,15 +1,37 @@
 <script lang="ts" setup>
-import { useRouter } from 'vue-router';
+import Navigation from '@/components/Navigation';
 
-import Navigation from './components/Navigation';
-const { currentRoute } = useRouter();
+const appVersion = __APP_VERSION__;
 </script>
 
 <template>
-  <div>
+  <div :class="$style.appRoot">
+    <Navigation></Navigation>
     <router-view />
-    <navigation v-if="currentRoute.name !== 'Auth'" />
+    <div :class="$style.footer">
+      <p>v.{{ appVersion }}</p>
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style lang="scss" module>
+.appRoot {
+  max-width: 540px;
+  margin: 0 auto;
+  height: 100dvh;
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 4px 20px;
+  text-align: center;
+  width: 100%;
+
+  p {
+    font-size: 12px;
+    color: #999;
+  }
+}
+</style>

@@ -10,6 +10,8 @@ interface ImportMetaEnv {
   readonly VITE_MEASUREMENT_ID: string;
 }
 
+declare const __APP_VERSION__: string;
+
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }

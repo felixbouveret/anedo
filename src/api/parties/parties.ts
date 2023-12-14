@@ -4,6 +4,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  DocumentData,
   getDoc,
   getDocs,
   onSnapshot,
@@ -47,6 +48,21 @@ export const getParty = async (uid: string) => {
   }
 };
 
+export const getParties = async (uid: string): Promise<DocumentData[]> => {
+  const q = query(collection(db, 'parties'), where('membersUid', 'array-contains', uid));
+  const querySnapshot = await getDocs(q);
+  const docs: DocumentData[] = [];
+
+  if (!querySnapshot.empty) {
+    querySnapshot.forEach((doc) => {
+      docs.push(doc.data());
+    });
+    return docs;
+  } else {
+    return docs;
+  }
+};
+
 export const listenParties = (uid: string, callback: (parties: PartyInterface[]) => void) => {
   const q = query(collection(db, 'parties'), where('membersUid', 'array-contains', uid));
 
@@ -58,6 +74,7 @@ export const listenParties = (uid: string, callback: (parties: PartyInterface[])
     callback(parties);
   });
 };
+
 export const listenParty = (partyUid: string, callback: (partyData: PartyInterface) => void) =>
   onSnapshot(doc(db, 'parties', partyUid), (querySnapshot) => {
     if (querySnapshot.exists()) callback(querySnapshot.data() as PartyInterface);
@@ -166,12 +183,13 @@ export const getAllPartyMembers = async (partyId: string, membersUids: string[])
 
 export const listenPartyMembers = (
   partyUid: string,
-  callback: (partyData: UserInterface[]) => void
+  callback: (partyUsers: UserInterface[]) => void
 ) =>
   onSnapshot(collection(db, 'parties', partyUid, 'members'), async (querySnapshot) => {
     const membersStatus: UserInterface[] = [];
     querySnapshot.forEach((doc) => membersStatus.push(doc.data() as UserInterface));
     const membersUids = membersStatus.map((member) => member.uid);
+
     const membersPersonalInfos = await getMultipleUsers(membersUids);
 
     const result = membersPersonalInfos.map((personalInfos) => ({
