@@ -3,26 +3,20 @@ import { Back } from '@element-plus/icons-vue';
 import { computed } from '@vue/reactivity';
 import { useRoute } from 'vue-router';
 
-import { useUser } from '@/composables/useUser';
 import router from '@/router';
 
-const { userData, logout } = useUser();
 const route = useRoute();
-
-const onLogout = async () => {
-  await logout();
-  router.push({ name: 'Auth' });
-};
 
 const goHome = async () => {
   router.push({ name: 'Home' });
 };
 
 const canGoBack = computed(() => route.name !== 'Home');
+const isAuth = computed(() => route.name === 'Auth');
 </script>
 
 <template>
-  <header class="nav">
+  <header v-if="!isAuth" class="nav">
     <ul class="list">
       <li v-if="canGoBack" class="item">
         <el-button :icon="Back" :plain="false" @click="goHome" />
