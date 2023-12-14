@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/felixbouveret/secret-story/compare/v1.2.0...v1.2.1) (2023-12-14)
+
+
+### Bug Fixes
+
+* **navigation:** hide nav in Auth screen and reload page on logout ([585dbf9](https://github.com/felixbouveret/secret-story/commit/585dbf9d331088feba279b6a22ea2dae3e47cd4f))
+
 # [1.2.0](https://github.com/felixbouveret/secret-story/compare/v1.1.2...v1.2.0) (2023-12-14)
 
 
