@@ -28,6 +28,7 @@ const login = async (mail: string, password: string) => {
 const logout = async () => {
   await AuthService.logout();
   resetUserData();
+  window.location.reload();
 };
 
 const register = async (email: string, password: string, displayName: string) => {
