@@ -1,5 +1,7 @@
 # Secret Story
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1fef19a3-b44f-4aec-9bec-58de244245c0/deploy-status)](https://app.netlify.com/sites/anedo/deploys)
+
 3 anecdotes par personnes, une fausse, deux vraies. Au début du jeu chaque participant reçois 3 anecdotes, il doit deviner a qui elles appartiennent et laquelle est la fausse.
 
 ## Contributors
